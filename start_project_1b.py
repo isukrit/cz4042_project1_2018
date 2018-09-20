@@ -1,26 +1,16 @@
 #
 # Project 1, starter code part b
 #
-import math
+
 import tensorflow as tf
 import numpy as np
 import pylab as plt
 
 
-def normalize(X, X_mean, X_std):
-	return (X - X_mean)/X_std
-
-def shuffle_data (samples, labels):
-    idx = np.arange(samples.shape[0])
-    np.random.shuffle(idx)
-    #print  (samples.shape, labels.shape)
-    samples, labels = samples[idx], labels[idx]
-    return samples, labels
-
 NUM_FEATURES = 8
 
-learning_rate = 1e-7
-epochs = 1000
+learning_rate = 0.01
+epochs = 500
 batch_size = 32
 num_neuron = 30
 seed = 10
@@ -31,14 +21,14 @@ cal_housing = np.loadtxt('cal_housing.data', delimiter=',')
 X_data, Y_data = cal_housing[:,:8], cal_housing[:,-1]
 Y_data = (np.asmatrix(Y_data)).transpose()
 
-X_data, Y_data = shuffle_data(X_data, Y_data)
+idx = np.arange(X_data.shape[0])
+np.random.shuffle(idx)
+X_data, Y_data = X_data[idx], Y_data[idx]
 
 m = 3* X_data.shape[0] // 10
 trainX, trainY = X_data[m:], Y_data[m:]
 
-#  pre-process data
-trainX_mean, trainX_std = np.mean(trainX, axis=0), np.std(trainX, axis=0)
-trainX = normalize(trainX, trainX_mean, trainX_std)
+trainX = (trainX- np.mean(trainX, axis=0))/ np.std(trainX, axis=0)
 
 # experiment with small datasets
 trainX = trainX[:1000]
@@ -71,7 +61,7 @@ with tf.Session() as sess:
 		if i % 100 == 0:
 			print('iter %d: test error %g'%(i, train_err[i]))
 
-
+# plot learning curves
 plt.figure(1)
 plt.plot(range(epochs), train_err)
 plt.xlabel(str(epochs) + ' iterations')
