@@ -15,3 +15,8 @@ Answer: To simply answer your question, 'no', we don't favor any particular libr
 2) Do I need to build the network manually or is it fine if I use higher level API like Keras?
 
 Answer: We would prefer that you build the network manually. Although, using higher level APIs is easier and it gets the job done (as well), but it usually leaves you with an incomplete understanding of the working of the different neural network layers, the relationship between their outputs and inputs, their weights, etc. 
+
+3) It's stated that we need to use 5-fold cross-validation in part B, but, it's not stated how we should choose the output from the 5 models? Should we average the error from each of k folds or choose the output corresponding to the best fold?
+
+Answer: You should take the average of the k folds. To understand why, consider the scenario where you divided the data for training and validation in such a way that the validation data contained 'simpler' samples and therefore may be easier to predict (which will give you a high validation accuracy/low error). To avoid this, you evaluate the model on all the folds, basically all the training data by using k-fold CV. 
+
